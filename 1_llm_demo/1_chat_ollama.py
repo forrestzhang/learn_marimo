@@ -13,8 +13,19 @@ def __():
 @app.cell
 def __(mo):
     llm_model = mo.ui.dropdown(options=['llama3.2','llama3.1','qwen2.5'], label="Choose LLM model", value="llama3.1")
+
+    base_url = mo.ui.dropdown(options={'localhost':'http://localhost:11434', 
+                                       '10.127.127.2':'http://10.127.127.2:11434',
+                                       '10.127.127.5':'http://10.127.127.5:11434',
+                                      },
+                              label="Choose Ollama base_url",
+                              value='localhost'
+                             )
+
     temperature = mo.ui.slider(0,1,0.1)
-    return llm_model, temperature
+
+
+    return base_url, llm_model, temperature
 
 
 @app.cell
@@ -30,12 +41,19 @@ def __(temperature):
 
 
 @app.cell
-def __(llm_model, temperature):
+def __(base_url):
+    base_url
+    return
+
+
+@app.cell
+def __(base_url, llm_model, temperature):
     from langchain_ollama import ChatOllama
 
     llm = ChatOllama(
         model = llm_model.value,
-        temperature = temperature.value,    
+        temperature = temperature.value, 
+        base_url = base_url.value
     )
     return ChatOllama, llm
 
@@ -52,11 +70,13 @@ def __(llm):
 
 
 @app.cell
-def __(ChatOllama, llm_model, temperature):
+def __(ChatOllama, base_url, llm_model, temperature):
     json_llm = ChatOllama(
                 format="json",
                 model = llm_model.value,
-                temperature = temperature.value,  )
+                temperature = temperature.value, 
+                base_url = base_url.value
+    )
 
     return (json_llm,)
 
