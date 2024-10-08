@@ -22,10 +22,27 @@ def __(mo):
                               value='localhost'
                              )
 
-    temperature = mo.ui.slider(0,1,0.1)
-
-
+    temperature = mo.ui.slider(0,1,0.1, label='temperature')
     return base_url, llm_model, temperature
+
+
+@app.cell
+def __(base_url, llm_model, mo, temperature):
+    horizontal = mo.hstack(
+                           items=[llm_model,
+                                   base_url,
+                                   temperature],
+                            justify="space-around",
+                            gap=0.5
+
+                          )
+    return (horizontal,)
+
+
+@app.cell
+def __(horizontal):
+    horizontal
+    return
 
 
 @app.cell
@@ -43,6 +60,11 @@ def __(temperature):
 @app.cell
 def __(base_url):
     base_url
+    return
+
+
+@app.cell
+def __():
     return
 
 
@@ -77,7 +99,6 @@ def __(ChatOllama, base_url, llm_model, temperature):
                 temperature = temperature.value, 
                 base_url = base_url.value
     )
-
     return (json_llm,)
 
 
