@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.9.3"
+__generated_with = "0.9.4"
 app = marimo.App(width="medium")
 
 
@@ -81,11 +81,25 @@ def __(base_url, llm_model, temperature):
 
 
 @app.cell
-def __(llm):
+def __(mo):
+    text = mo.ui.text(placeholder="I love marimo!", 
+                      value='I love marimo!',
+                      full_width=True)
+    return (text,)
+
+
+@app.cell
+def __(text):
+    text
+    return
+
+
+@app.cell
+def __(llm, text):
     # json_llm = ChatOllama(format="json")
     messages = [
-         ("system", "You are a helpful translator. Translate the user sentence to French."),
-        ("human", "I love programming."),
+         ("system", "You are a helpful translator. Translate the user sentence to Chinese."),
+        ("human", f"{text.value}"),
     ]
     llm.invoke(messages)
     return (messages,)
